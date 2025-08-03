@@ -1,7 +1,7 @@
 replicaCount: 3
 image:
   repository: my-payment-api
-  tag: "1.0.0"
+  tag: 1.0.0
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
@@ -12,25 +12,25 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
   hosts:
-    - host: my-app.example.com
-      paths:
-        - path: /
-          pathType: Prefix
+  - host: my-app.example.com
+    paths:
+    - path: /
+      pathType: Prefix
   tls:
-    - secretName: my-app-tls
-      hosts:
-        - my-app.example.com
+  - secretName: my-app-tls
+    hosts:
+    - my-app.example.com
 resources:
   requests:
-    cpu: 500m
-    memory: 800Mi
+    cpu: 750m
+    memory: 640Mi
   limits:
-    cpu: 500m
-    memory: 800Mi
+    cpu: 1500m
+    memory: 1350Mi
 autoscaling:
   enabled: true
-  minReplicas: 4
-  maxReplicas: 12
+  minReplicas: 6
+  maxReplicas: 15
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 75
 securityContext:
@@ -46,7 +46,7 @@ livenessProbe:
     httpGet:
       path: /health
       port: http
-    initialDelaySeconds: 60
+    initialDelaySeconds: 70
     periodSeconds: 10
 readinessProbe:
   enabled: true
@@ -54,13 +54,14 @@ readinessProbe:
     httpGet:
       path: /ready
       port: http
-    initialDelaySeconds: 60
+    initialDelaySeconds: 50
     periodSeconds: 5
 nodeSelector: {}
 tolerations: []
 affinity: {}
 env:
-  - name: APP_ENV
-    value: "production"
-  - name: LOG_LEVEL
-    value: "info"
+- name: APP_ENV
+  value: production
+- name: LOG_LEVEL
+  value: info
+
