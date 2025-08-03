@@ -22,15 +22,15 @@ ingress:
     - my-app.example.com
 resources:
   requests:
-    cpu: 750m
-    memory: 640Mi
+    cpu: 1000m
+    memory: 1080Mi
   limits:
-    cpu: 1500m
-    memory: 1350Mi
+    cpu: 2000m
+    memory: 2025Mi
 autoscaling:
   enabled: true
-  minReplicas: 6
-  maxReplicas: 15
+  minReplicas: 8
+  maxReplicas: 20
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 75
 securityContext:
@@ -46,7 +46,7 @@ livenessProbe:
     httpGet:
       path: /health
       port: http
-    initialDelaySeconds: 70
+    initialDelaySeconds: 90
     periodSeconds: 10
 readinessProbe:
   enabled: true
@@ -54,7 +54,7 @@ readinessProbe:
     httpGet:
       path: /ready
       port: http
-    initialDelaySeconds: 50
+    initialDelaySeconds: 60
     periodSeconds: 5
 nodeSelector: {}
 tolerations: []
