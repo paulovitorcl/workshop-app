@@ -145,10 +145,3 @@ jobs:
           
         branch: ai-optimization/${{ inputs.environment || 'prod' }}-${{ github.run_number }}
         delete-branch: true
-    
-    - name: Request Copilot Review
-      if: steps.create_pr.outputs.pull-request-number
-      run: |
-        gh pr comment ${{ steps.create_pr.outputs.pull-request-number }} --body "@github-copilot[bot] please review these changes and suggest any improvements for Kubernetes deployment optimization"
-      env:
-        GH_TOKEN: ${{ secrets.PR_TOKEN }}
