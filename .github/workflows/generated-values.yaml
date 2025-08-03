@@ -108,7 +108,7 @@ jobs:
     - name: Create optimized values file
       run: |
         mkdir -p generated
-        echo "${{ steps.generate.outputs.generated_values }}" > values.yaml
+        echo "${{ steps.generate.outputs.generated_values }}" > helm/values.yaml
     
     - name: Create Pull Request
       id: create_pr
@@ -143,7 +143,6 @@ jobs:
           
           ---
           
-          /copilot Please review these Helm value changes and provide optimization suggestions
         branch: ai-optimization/${{ inputs.environment || 'prod' }}-${{ github.run_number }}
         delete-branch: true
     
