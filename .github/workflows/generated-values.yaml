@@ -38,19 +38,21 @@ jobs:
     - name: Read current values
       id: current_values
       run: |
+        delimiter="VALUES_$(date +%s)"
         {
-          echo "content<<EOF"
+          echo "content<<$delimiter"
           cat helm/values.yaml
-          echo "EOF"
+          echo "$delimiter"
         } >> $GITHUB_OUTPUT
     
     - name: Read operational context
       id: operational_context
       run: |
+        delimiter="CONTEXT_$(date +%s)"
         {
-          echo "content<<EOF"
+          echo "content<<$delimiter"
           cat docs/operational-context.yaml
-          echo "EOF"
+          echo "$delimiter"
         } >> $GITHUB_OUTPUT
     
     - name: Read Helm templates
@@ -96,10 +98,11 @@ jobs:
         echo "Generated templates JSON length: ${#templates_json}"
         
         # Use GitHub Actions output format with proper escaping
+        delimiter="TEMPLATES_$(date +%s)"
         {
-          echo "content<<EOF"
+          echo "content<<$delimiter"
           echo "$templates_json"
-          echo "EOF"
+          echo "$delimiter"
         } >> $GITHUB_OUTPUT
     
     - name: Generate AI-optimized values
