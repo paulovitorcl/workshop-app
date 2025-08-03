@@ -38,20 +38,16 @@ jobs:
     - name: Read current values
       id: current_values
       run: |
-        cat << 'DELIMITER' >> $GITHUB_OUTPUT
-        content<<EOF
-        $(cat helm/values.yaml)
-        EOF
-        DELIMITER
+        echo "content<<EOF" >> $GITHUB_OUTPUT
+        cat helm/values.yaml >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
     
     - name: Read operational context
       id: operational_context
       run: |
-        cat << 'DELIMITER' >> $GITHUB_OUTPUT
-        content<<EOF
-        $(cat docs/operational-context.yaml)
-        EOF
-        DELIMITER
+        echo "content<<EOF" >> $GITHUB_OUTPUT
+        cat docs/operational-context.yaml >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
     
     - name: Read Helm templates
       id: helm_templates
