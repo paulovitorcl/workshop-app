@@ -38,16 +38,20 @@ jobs:
     - name: Read current values
       id: current_values
       run: |
-        echo "content<<EOF" >> $GITHUB_OUTPUT
-        cat helm/values.yaml >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        {
+          echo "content<<EOF"
+          cat helm/values.yaml
+          echo "EOF"
+        } >> $GITHUB_OUTPUT
     
     - name: Read operational context
       id: operational_context
       run: |
-        echo "content<<EOF" >> $GITHUB_OUTPUT
-        cat docs/operational-context.yaml >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        {
+          echo "content<<EOF"
+          cat docs/operational-context.yaml
+          echo "EOF"
+        } >> $GITHUB_OUTPUT
     
     - name: Read Helm templates
       id: helm_templates
@@ -62,9 +66,11 @@ jobs:
         done
         templates_json="${templates_json%,}]"
         
-        echo "content<<EOF" >> $GITHUB_OUTPUT
-        echo "$templates_json" >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        {
+          echo "content<<EOF"
+          echo "$templates_json"
+          echo "EOF"
+        } >> $GITHUB_OUTPUT
     
     - name: Generate AI-optimized values
       id: generate
