@@ -108,7 +108,7 @@ jobs:
     - name: Create optimized values file
       run: |
         mkdir -p generated
-        echo "${{ steps.generate.outputs.generated_values }}" > generated/values-${{ inputs.environment || 'prod' }}.yaml
+        echo "${{ steps.generate.outputs.generated_values }}" > values.yaml
     
     - name: Create Pull Request
       id: create_pr
@@ -153,9 +153,3 @@ jobs:
         gh pr comment ${{ steps.create_pr.outputs.pull-request-number }} --body "@github-copilot[bot] please review these changes and suggest any improvements for Kubernetes deployment optimization"
       env:
         GH_TOKEN: ${{ secrets.PR_TOKEN }}
-        
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: optimized-values-${{ inputs.environment || 'prod' }}
-        path: generated/
