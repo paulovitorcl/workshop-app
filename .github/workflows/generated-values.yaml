@@ -56,15 +56,44 @@ jobs:
     - name: Read Helm templates
       id: helm_templates
       run: |
-        templates_json="["
-        for file in helm/templates/*.yaml; do
-          if [ -f "$file" ]; then
-            echo "Processing $file"
-            content=$(cat "$file" | jq -R -s '.')
-            templates_json="${templates_json}${content},"
-          fi
-        done
-        templates_json="${templates_json%,}]"
+        # Initialize empty JSON array
+        templates_json="[]"
+        
+        # Check if templates directory exists and has files
+        if [ -d "helm/templates" ] && [ "$(ls -A helm/templates/*.yaml 2>/dev/null)" ]; then
+          echo "Found Helm templates, processing..."
+          templates_json="["
+          first=true
+          
+          for file in helm/templates/*.yaml; do
+            if [ -f "$file" ]; then
+              echo "Processing $file"
+              
+              # Add comma separator for all but first item
+              if [ "$first" = true ]; then
+                first=false
+              else
+                templates_json="${templates_json},"
+              fi
+              
+              # Escape and add file content as JSON string
+              content=$(cat "$file" | jq -R -s '.')
+              templates_json="${templates_json}${content}"
+            fi
+          done
+          
+          templates_json="${templates_json}]"
+        else
+          echo "No Helm templates found, using empty array"
+        fi
+        
+        # Validate JSON
+        echo "$templates_json" | jq . > /dev/null || {
+          echo "::error::Generated invalid JSON for templates"
+          exit 1
+        }
+        
+        echo "Generated templates JSON length: ${#templates_json}"
         
         cat << 'DELIMITER' >> $GITHUB_OUTPUT
         content<<EOF
