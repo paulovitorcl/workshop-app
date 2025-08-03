@@ -1,0 +1,58 @@
+recent_incidents:
+  - date: "2024-01-15"
+    issue: "Out of Memory (OOMKilled)"
+    app: "my-payment-api"
+    environment: "prod"
+    root_cause: "Memory limit set to 512Mi but app needs 1Gi under load"
+    
+  - date: "2024-01-20"
+    issue: "High CPU throttling"
+    app: "my-payment-api"
+    environment: "prod"
+    root_cause: "CPU limit too low (500m) during peak traffic"
+    
+  - date: "2024-01-25"
+    issue: "Pod startup failures"
+    app: "my-payment-api"
+    environment: "prod"
+    root_cause: "Readiness probe failing - app takes 45s to start"
+
+current_metrics:
+  my-payment-api:
+    prod:
+      avg_cpu_usage: "65%"
+      avg_memory_usage: "80%"
+      peak_cpu_usage: "95%"
+      peak_memory_usage: "90%"
+      startup_time: "45 seconds"
+      request_rate: "1000 req/min"
+      error_rate: "0.1%"
+      replicas_running: "8/10 (autoscaled to max)"
+      
+traffic_patterns:
+  my-payment-api:
+    peak_hours: "09:00-17:00 UTC"
+    peak_days: "Monday-Friday"
+    traffic_multiplier: "3x during peaks"
+    seasonal_spikes: "Black Friday, Christmas"
+
+performance_requirements:
+  my-payment-api:
+    response_time_p95: "< 200ms"
+    availability: "99.9%"
+    max_acceptable_downtime: "4.3 hours/month"
+    concurrent_users: "10000"
+
+resource_observations:
+  patterns:
+    - "Payment APIs typically need 2x memory during month-end processing"
+    - "API services should have readiness probe delay >= startup time"
+    - "Production workloads should never run with limits == requests"
+    - "HPA should target 70% CPU to allow burst capacity"
+    
+  recommendations:
+    - "Set memory requests to 80% of observed usage"
+    - "Set memory limits to 150% of observed peak usage" 
+    - "Use multiple replicas for high availability"
+    - "Enable HPA for variable workloads"
+    - "Set conservative probe timeouts in production"
