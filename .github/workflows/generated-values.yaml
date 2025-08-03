@@ -95,11 +95,10 @@ jobs:
         
         echo "Generated templates JSON length: ${#templates_json}"
         
-        cat << 'DELIMITER' >> $GITHUB_OUTPUT
-        content<<EOF
-        $templates_json
-        EOF
-        DELIMITER
+        # Use GitHub Actions output format with proper escaping
+        echo "content<<EOF" >> $GITHUB_OUTPUT
+        echo "$templates_json" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
     
     - name: Generate AI-optimized values
       id: generate
